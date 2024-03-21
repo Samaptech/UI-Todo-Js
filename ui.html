@@ -36,13 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Exam</td>
-                    <td>Lorem ipsum iam ut? Minima 
-                    </td>
-                    <td class="d-flex"><button class="btn btn-primary my-1">Edit</button>&nbsp;&nbsp;&nbsp;<button class="btn btn-danger">Delete</button></td>
-                </tr>
+               
             </tbody>
         </table>
     </div>
@@ -66,13 +60,38 @@
             todo.push({title : title.value , desc : desc.value});
             localStorage.setItem("data" ,JSON.stringify(todo) )
             updatetodo();
+            title.value = "";
+            desc.value = "";
         }
-        function updatetodo(){
-            console.log(todo);
-        }
-        updatetodo();
-
     };
-</script>
+        function updatetodo(){
+            todo=JSON.parse(localStorage.getItem("data"));
+            let str = "";
+            todo.forEach((data , index) => (str = str + `
+            <tr>
+                    <td>${index + 1}</td>
+                    <td>${data.title}</td>
+                    <td>${data.desc}</td>
+                     <td class="d-flex"><button class="btn btn-primary my-1">Edit</button>&nbsp;&nbsp;&nbsp;<button onclick="deleteTodo(${index})"
+                         class="btn btn-danger">Delete</button></td>
+                </tr>
+            
+            `));
+            document.querySelector("tbody").innerHTML = str;
+            };
 
+            function deleteTodo(index){
+                todo=JSON.parse(localStorage.getItem("data"));
+                todo.splice(index , 1);
+                localStorage.setItem("data" , JSON.stringify(todo));
+                updatetodo();
+            }
+       
+
+            updatetodo();
+
+
+</script>
 </html>
+
+
