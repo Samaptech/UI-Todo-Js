@@ -110,6 +110,13 @@
                 document.getElementsByClassName("edit")[index].classList.remove("d-none");
                 document.getElementsByClassName("save")[index].classList.add("d-none");
                 document.querySelector('.addtodo').style.display="block";
+                todo=JSON.parse(localStorage.getItem("data"));
+                todo[index].title = title.value;
+                todo[index].desc = desc.value;
+                localStorage.setItem("data" ,JSON.stringify(todo) )
+                 updatetodo();
+                 title.value = "";
+                 desc.value = "";
               
             }
             updatetodo();
