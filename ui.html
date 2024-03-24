@@ -21,7 +21,7 @@
             <textarea name="desc" id="desc" cols="30" rows="3" class="form-control" placeholder="Desc"></textarea>
         </div>
         <div>
-            <button class="btn btn-primary" onclick="addtodo()">ADD TODO</button>
+            <button class="addtodo btn  btn-primary" onclick="addtodo()">ADD TODO</button>
         </div>
 
 
@@ -72,7 +72,7 @@
                     <td>${index + 1}</td>
                     <td>${data.title}</td>
                     <td>${data.desc}</td>
-                     <td class="d-flex"><button class="btn btn-primary my-1">Edit</button>&nbsp;&nbsp;&nbsp;<button onclick="deleteTodo(${index})"
+                     <td class="d-flex"><button onclick="edittodo(${index})" class="edit btn btn-primary my-1">Edit</button><button onclick="saveTodo(${index})"  class="save  btn btn-primary my-1 d-none">Save</button>&nbsp;&nbsp;&nbsp;<button onclick="deleteTodo(${index})"
                          class="btn btn-danger">Delete</button></td>
                 </tr>
             
@@ -86,8 +86,32 @@
                 localStorage.setItem("data" , JSON.stringify(todo));
                 updatetodo();
             }
-       
 
+            function edittodo(index){
+              if(document.querySelector('.addtodo').style.display == "none" ){
+                alert("you are already in editing mode");
+              }
+              else{
+                document.querySelector('.addtodo').style.display="none";
+                todo=JSON.parse(localStorage.getItem("data"));
+                title.value = todo[index].title;
+                desc.value = todo[index].desc;
+                document.getElementsByClassName("save")[index].classList.remove("d-none");
+                document.getElementsByClassName("edit")[index].classList.add("d-none");
+              
+              }
+                              
+                  
+               
+                
+            }
+       
+            function saveTodo(index) {
+                document.getElementsByClassName("edit")[index].classList.remove("d-none");
+                document.getElementsByClassName("save")[index].classList.add("d-none");
+                document.querySelector('.addtodo').style.display="block";
+              
+            }
             updatetodo();
 
 
