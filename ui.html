@@ -49,30 +49,58 @@
     </script>
 
 </body>
-
 <script>
     let title = document.getElementById('title');
     let desc = document.getElementById('desc');
-    let todo  = [];
+    let todo = JSON.parse(localStorage.getItem("data")) || [];
+    let editIndex = -1; 
 
     function addtodo() {
-        if(title.value == "" || desc.value == "")
-    {
-            alert("all fields are required");
+        if (title.value == "" || desc.value == "") {
+            alert("All fields are required");
+        } else {
+            if (editIndex === -1) {
+                todo.push({
+                    title: title.value,
+                    desc: desc.value
+                });
+            } else {
+                todo[editIndex] = {
+                    title: title.value,
+                    desc: desc.value
+                };
+                editIndex = -1;
+            }
+            localStorage.setItem("data", JSON.stringify(todo));
+            updateTodo();
+            title.value = "";
+            desc.value = "";
+        }
     }
-    else{
-        todo.push({title : title.value , desc : desc.value});
-        localStorage.setItem("date" ,JSON.stringify(todo));
-        updateTodo();
-    }
-    }
-    addtodo();
-    function updateTodo(){
+
+    function updateTodo() {
+        todo = JSON.parse(localStorage.getItem("data")) || [];
+        let str = "";
+        todo.forEach((data, index) => {
+            str +=
+                ` <tr> <td>${index + 1}</td> <td>${data.title}</td> <td>${data.desc}</td> <td class="d-flex"> <button class="btn btn-primary me-1" onclick="editTodo(${index})">Edit</button> <button class="btn btn-danger me-1" onclick="deleteTodo(${index})">Delete</button> </td> </tr> `;
+        });
+        document.querySelector("tbody").innerHTML = str;
         console.log(todo);
     }
+
+    function editTodo(index) {
+        title.value = todo[index].title;
+        desc.value = todo[index].desc;
+        editIndex = index;
+    }
+
+    function deleteTodo(index) {
+        todo.splice(index, 1);
+        localStorage.setItem("data", JSON.stringify(todo));
+        updateTodo();
+    }
     updateTodo();
-
-    
 </script>
-
+</body> 
 </html>
